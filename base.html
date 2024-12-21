@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LLM Comparator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="{{ url_for('index') }}">LLM Comparator</a>
+        <ul class="navbar-nav ms-auto">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('compare') }}">Compare</a>
+                </li>
+                <!-- NEW Link to single-model chat page -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('single_model_chat') }}">Single Model Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+                </li>
+                <!-- NEW CODE START -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('donate') }}">Donate</a>
+                </li>
+                <!-- NEW CODE END -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                </li>
+                <!-- NEW CODE START -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('donate') }}">Donate</a>
+                </li>
+                <!-- NEW CODE END -->
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

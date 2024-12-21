@@ -1,0 +1,10 @@
+Flask==2.3.3
+Flask-Login==0.6.3
+Flask-SQLAlchemy==3.0.5
+requests==2.31.0
+pyjwt==2.8.0
+bcrypt==4.0.1
+# If using OpenAI or other official clients, add them:
+openai==0.27.0
+
+anthropic~=0.42.0

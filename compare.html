@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+            <h2>Compare AI Model Responses</h2>
+            <form method="POST" action="{{ url_for('compare') }}">
+                <div class="mb-3">
+                    <label for="prompt" class="form-label">Enter your prompt:</label>
+                    <textarea class="form-control" id="prompt" name="prompt" rows="3" required></textarea>
+                </div>
+
+                <div class="row">
+                    <!-- ChatGPT Model Selection -->
+                    <div class="col-md-6 mb-3">
+                        <label for="chatgpt_model" class="form-label">ChatGPT Model:</label>
+                        <select class="form-select" name="chatgpt_model" id="chatgpt_model" {% if not current_user.enable_chatgpt %}disabled{% endif %}>
+                            <option value="gpt-3.5-turbo" selected>gpt-3.5-turbo</option>
+                            <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
+                            <option value="gpt-4">gpt-4</option>
+                            <option value="gpt-4-32k">gpt-4-32k</option>
+                        </select>
+                    </div>
+
+                    <!-- Gemini Model Selection -->
+                    <div class="col-md-6 mb-3">
+                        <label for="gemini_model" class="form-label">Gemini Model:</label>
+                        <select class="form-select" name="gemini_model" id="gemini_model" {% if not current_user.enable_gemini %}disabled{% endif %}>
+                            <option value="gemini-1.5-pro" selected>Gemini 1.5 Pro</option>
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                            <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8B</option>
+                            <option value="gemini-pro">Gemini Pro</option>
+                            <option value="text-embedding-004">Text Embedding 004</option>
+                        </select>
+                    </div>
+
+                    <!-- xAI Model Selection -->
+                    <div class="col-md-6 mb-3">
+                        <label for="xai_model" class="form-label">xAI Model:</label>
+                        <select class="form-select" name="xai_model" id="xai_model" {% if not current_user.enable_xai %}disabled{% endif %}>
+                            <option value="grok-2" selected>Grok 2</option>
+                            <option value="grok-2-latest">Grok 2 Latest</option>
+                            <option value="grok-beta">Grok Beta</option>
+                            <option value="grok-vision-beta">Grok Vision Beta</option>
+                            <option value="grok-2-vision-1212">Grok 2 Vision 1212</option>
+                            <option value="grok-2-1212">Grok 2 1212</option>
+                        </select>
+                    </div>
+
+                    <!-- Claude Model Selection -->
+                    <div class="col-md-6 mb-3">
+                        <label for="claude_model" class="form-label">Claude Model:</label>
+                        <select class="form-select" name="claude_model" id="claude_model" {% if not current_user.enable_claude %}disabled{% endif %}>
+                            <option value="claude-3-sonnet-20240229" selected>Claude 3 Sonnet</option>
+                            <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                            <option value="claude-3-haiku-20240229">Claude 3 Haiku</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center mb-4">
+                    <button class="btn btn-primary" type="submit">Compare Responses</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if response_chatgpt or response_gemini or response_xai or response_claude %}
+    <div class="row g-4">
+        <!-- ChatGPT Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">ChatGPT</h5>
+                </div>
+                <div class="card-body">
+                    <pre class="mb-0 pre-scrollable" style="max-height: 400px; overflow-y: auto;">{{ response_chatgpt or 'No response or API error.' }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gemini Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Gemini</h5>
+                </div>
+                <div class="card-body">
+                    <pre class="mb-0 pre-scrollable" style="max-height: 400px; overflow-y: auto;">{{ response_gemini or 'No response or API error.' }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- xAI Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">xAI</h5>
+                </div>
+                <div class="card-body">
+                    <pre class="mb-0 pre-scrollable" style="max-height: 400px; overflow-y: auto;">{{ response_xai or 'No response or API error.' }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Claude Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title mb-0">Claude</h5>
+                </div>
+                <div class="card-body">
+                    <pre class="mb-0 pre-scrollable" style="max-height: 400px; overflow-y: auto;">{{ response_claude or 'No response or API error.' }}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
